@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>ATCG Codec</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin-top: 10px;
+        }
+
+        .title{
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            color: rgb(19, 19, 19);
+            
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            font-family: Arial;
+        }
+
+        .container select {
+            margin-right: 10px;
+        }
+
+        .text-input, .output {
+            width: 1000px;
+            height: 150px;
+            font-family: Arial;
+            font-size:medium;
+            margin-top: 20px;
+            background-color: rgb(242, 242, 242);
+            border: none;
+            padding-left: 10px;
+            padding-top: 7px;
+            border-radius: 15px;
+            color: rgb(136, 136, 136);
+        }
+
+        .paragraph {
+            font-family: Arial;
+        }
+        .menu1{
+            margin: 10px;
+            font-size: medium;
+            margin-bottom: 25px;
+            margin-left: 320px;
+        }
+
+        .menu {
+            margin: 10px;
+            font-size: medium;
+            margin-bottom: 25px;
+        }
+        .css-text{
+            margin-bottom: 16px;
+        }
+        .Déposer{
+            font-size: large;
+            margin-bottom: 16px;
+            margin-left: 100px;
+            background-color: white;
+            transition: background-color 0.3s; 
+            border: none;
+            border-radius: 10px;
+        }
+        .Déposer:hover {
+            background-color: rgb(229, 229, 229); /* Change background color on hover */
+        }
+
+        .Icon{
+            padding-top: 10px;
+            height: 20px;
+            width: 20px;
+        }
+        .flèche{
+        height: 40px;
+        width: 50px;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1 class="title">ATCG Codec</h1>
+        <textarea id="input" placeholder="Insérer du texte" class="text-input" onkeyup="translate()"></textarea>
+        <p></p>
+        <div class="container">
+            <select name="menu1" class="menu1">
+                <option value="0">Binary</option>
+                <option value="1">Text</option>
+                <option value="2">ADN (quaternaire)</option>
+            </select>
+            <div class="css-text"><img src="Icone flèche vers la droite.jpg" class="flèche"></div>
+            <select name="menu" class="menu">
+                <option value="0">Binary</option>
+                <option value="1">Text</option>
+                <option value="2">ADN (quaternaire)</option>
+            </select>
+        <button class="Déposer"><img src="Icon déposer un fichier.png" class="Icon"> Déposer un fichier</button>    
+        </div>
+        <textarea id="output" placeholder="Résultat" class="output"></textarea>
+
+        <script>
+            function translate(){
+                const inputBox = document.getElementById("input");
+                const outputBox = document.getElementById("output");
+                const inputText = inputBox.value;
+                let result = "";
+
+                for(let i = 0; i < inputText.length; i++){
+                    let char = inputText.charAt(i);
+                    switch(char.toUpperCase()){
+                        case "A":
+                            result += "A ";
+                            break;
+                        case "T":
+                            result += "T ";
+                            break;
+                        case "C":
+                            result += "C ";
+                            break;
+                        case "G":
+                            result += "G ";
+                            break;
+                        default:
+                            // Handle any other characters
+                            break;
+                    }
+                }
+                outputBox.value = result.trim();
+            }
+        </script>
+    </div>
+</body>
+</html>

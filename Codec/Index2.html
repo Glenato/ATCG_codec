@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>ATCG Codec</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin-top: 10px;
+        }
+
+        .title{
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            color: rgb(19, 19, 19);
+            
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            font-family: Arial;
+        }
+
+        .container select {
+            margin-right: 10px;
+        }
+
+        .text-input{
+            width: 1000px;
+            height: 150px;
+            font-family: Arial;
+            font-size:medium;
+            margin-top: 20px;
+            background-color: rgb(242, 242, 242);
+            border: none;
+            padding-left: 10px;
+            padding-top: 7px;
+            border-radius: 15px;
+            color: rgb(136, 136, 136);
+        }
+
+        .output {
+            width: 1000px;
+            height: 300px;
+            font-family: Arial;
+            font-size:medium;
+            margin-top: 20px;
+            background-color: rgb(242, 242, 242);
+            border: none;
+            padding-left: 10px;
+            padding-top: 7px;
+            border-radius: 15px;
+            color: rgb(136, 136, 136);
+        }
+
+        .paragraph {
+            font-family: Arial;
+        }
+        .menu1{
+            margin: 10px;
+            font-size: medium;
+            margin-bottom: 25px;
+            margin-left: 320px;
+        }
+
+        .menu {
+            margin: 10px;
+            font-size: medium;
+            margin-bottom: 25px;
+        }
+        .css-text{
+            margin-bottom: 16px;
+        }
+        .Déposer{
+            font-size: large;
+            margin-bottom: 16px;
+            margin-left: 100px;
+            background-color: white;
+            transition: background-color 0.3s; 
+            border: none;
+            border-radius: 10px;
+        }
+        .Déposer:hover {
+            background-color: rgb(229, 229, 229); /* Change background color on hover */
+        }
+
+        .Icon{
+            padding-top: 10px;
+            height: 20px;
+            width: 20px;
+        }
+        .flèche{
+        height: 40px;
+        width: 50px;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <input type="file" id="fileInput" webkitdirectory directory multiple style="display:none">
+        <h1 class="title">ATCG Codec</h1>
+        <textarea id="input" placeholder="Insérer du texte" spellcheck="false" class="text-input"></textarea>
+        <p></p>
+        <div class="container">
+            <select name="menu1" class="menu1">
+                <option value="0">Binary</option>
+                <option value="1">Text</option>
+                <option value="2">ADN (quaternaire)</option>
+            </select>
+            <div class="css-text"><img src="Icone flèche vers la droite.jpg" class="flèche"></div>
+            <select name="menu" class="menu">
+                <option value="0">Binary</option>
+                <option value="1">Text</option>
+                <option value="2">ADN (quaternaire)</option>
+            </select>
+        <button class="Déposer"onclick="openFileExplorer()"><img src="Icon déposer un fichier.png" class="Icon"> Déposer un fichier</button>    
+        </div>
+        <textarea id="output" placeholder="Résultat" class="output"></textarea>
+
+        <script>
+            function openFileExplorer() {
+                document.getElementById('fileInput').click();
+            }
+            class Conversion {
+                constructor() {
+                    this.cipher = {
+                        'A': '00',
+                        'C': '01',
+                        'G': '10',
+                        'T': '11',
+                        '00': 'A',
+                        '01': 'C',
+                        '10': 'G',
+                        '11': 'T'
+                    };
+                }
+
+                String_to_Binary(sentence) {
+                    let Binary = '';
+                    for (let char of sentence) {
+                        let bin_char = char.charCodeAt(0).toString(2);
+                        if (bin_char.length < 8) {
+                            bin_char = "0".repeat(8 - bin_char.length) + bin_char;
+                        }
+                        Binary += bin_char;
+                    }
+                    return Binary;
+                }
+
+                Binary_to_DNA(Binary) {
+                    let DNA = '';
+                    for (let i = 0; i < Binary.length; i += 2) {
+                        let bits = Binary.slice(i, i + 2);
+                        DNA += this.cipher[bits];
+                    }
+                    return DNA;
+                }
+
+                DNA_to_Binary(DNA) {
+                    let Binary = '';
+                    for (let base of DNA.toUpperCase()) {
+                        Binary += this.cipher[base];
+                    }
+                    return Binary;
+                }
+
+                Binary_to_String(Binary) {
+                    let sentence = '';
+                    for (let i = 0; i < Binary.length; i += 8) {
+                        sentence += String.fromCharCode(parseInt(Binary.slice(i, i + 8), 2));
+                    }
+                    return sentence;
+                }
+
+                String_to_DNA(message) {
+                    let bin = this.String_to_Binary(message);
+                    let DNA = this.Binary_to_DNA(bin);
+                    return DNA;
+                }
+
+                DNA_to_String(DNA) {
+                    let reversed_bin = this.DNA_to_Binary(DNA);
+                    let reversed_formatted_string = this.Binary_to_String(reversed_bin);
+                    let reversed_string = this.String_reverse(reversed_formatted_string);
+                    return reversed_string;
+                }
+            }
+
+            function translate(){
+                const inputBox = document.getElementById("input");
+                const outputBox = document.getElementById("output");
+                const inputText = inputBox.value;
+                
+                const converter = new Conversion();
+                const DNA = converter.String_to_DNA(inputText);
+                
+                outputBox.value = DNA;
+            }
+
+            const inputBox = document.getElementById("input");
+            inputBox.addEventListener("input", translate);
+        </script>
+    </div>
+</body>
+</html>

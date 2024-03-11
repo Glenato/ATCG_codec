@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Choisir un dossier</title>
+</head>
+<body>
+
+    <input type="file" id="fileInput" webkitdirectory directory multiple style="display:none">
+    <button onclick="openFileExplorer()">Ouvrir le Finder</button>
+
+    <script>
+        function openFileExplorer() {
+            document.getElementById('fileInput').click();
+        }
+    </script>
+
+</body>
+</html>
